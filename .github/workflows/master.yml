@@ -19,8 +19,8 @@ jobs:
 
       - name: Deploy Test API
         run: |
-          docker stop test_api_container || true
-          docker rm test_api_container || true
+          docker stop test_api_container
+          docker rm test_api_container
           docker run -d \
           -e MONGO_URI=${{env.MONGO_URI}} \
           -p ${{env.API_PORT}}:${{env.API_PORT}} \
