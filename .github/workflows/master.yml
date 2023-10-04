@@ -21,10 +21,10 @@ jobs:
         run: |
           docker stop test_api_container || true
           docker rm test_api_container || true
-          docker run -d -e PORT=${{ env.API_PORT }} \
-          -e MONGO_URI=${{ env.MONGO_URI }} \
+          docker run -d \
+          -e MONGO_URI=${{env.MONGO_URI}} \
+          -p ${{env.API_PORT}}:${{env.API_PORT}} \
           --name test_api_container \
-          -p ${{ env.API_PORT }}:${{ env.API_PORT }} \
           test_api_image:latest
 
       - name: Remove Dangling Docker images
