@@ -29,4 +29,4 @@ jobs:
 
       - name: Remove Dangling Docker images
         run: |
-          docker rmi $(docker images --quiet --filter "dangling=true") || true
+          docker rmi $(docker images --quiet --filter "dangling=true")
