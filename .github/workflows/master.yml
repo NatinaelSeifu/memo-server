@@ -1,0 +1,32 @@
+
+name: Deploy Test API
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted-backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Test API Docker image
+        run: |
+          docker build -t test_api_image .
+
+      - name: Deploy Test API
+        run: |
+          docker stop test_api_container || true
+          docker rm test_api_container || true
+          docker run -d -e PORT=${{ env.API_PORT }} \
+          -e MONGO_URI=${{ env.MONGO_URI }} \
+          --name test_api_container \
+          -p ${{ env.API_PORT }}:${{ env.API_PORT }} \
+          test_api_image:latest
+
+      - name: Remove Dangling Docker images
+        run: |
+          docker rmi $(docker images --quiet --filter "dangling=true") || true
